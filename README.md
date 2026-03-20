@@ -1,16 +1,96 @@
-# multi_app
+# 📱 Multi-Vendor Marketplace App (Flutter Frontend)
 
-A new Flutter project.
+This is a Flutter mobile application connected to an AWS Serverless backend.  
+The project demonstrates how to build a scalable full-stack system (mobile + cloud).
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## 🚀 Features
 
-A few resources to get you started if this is your first Flutter project:
+- 🔐 User Signup UI (with validation)
+- 🔑 Ready for authentication (AWS Cognito integration)
+- 📦 Product API integration (in progress)
+- 📱 Tested on real Android device
+- 🎨 Clean and scalable UI structure
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 🧠 Tech Stack
+
+- Flutter (Dart)
+- Material UI
+- Google Fonts
+- REST API integration
+- AWS Backend (Lambda, API Gateway, DynamoDB, Cognito)
+
+---
+
+## 🏗 Architecture
+
+Flutter App
+↓
+API Gateway
+↓
+AWS Lambda
+↓
+DynamoDB
+
+---
+
+## 📂 Project Structure
+ib/
+main.dart
+views/
+auth/
+sign_up_screen.dart
+
+
+---
+
+## 🧪 Example Screen
+
+- Signup Screen (Email, Name, Password)
+- Form validation included
+- Ready for API connection
+
+---
+
+## 🔗 Backend Repository
+
+👉 https://github.com/Qairat1978/multi-market-place
+
+---
+
+## 🚀 Getting Started
+
+```bash
+flutter pub get
+flutter run
+🎯 What I Learned
+
+Building mobile UI with Flutter
+
+Connecting frontend with AWS backend
+
+Form validation and clean UI design
+
+Testing on real devices
+🔥 Next Steps
+
+Connect Signup API (AWS Cognito)
+
+Login & Authentication flow
+
+Product listing screen
+
+Image upload (AWS S3)
+
+Order system
+
+👨‍💻 Author
+
+Kairat Tulegenov
+
+⭐️ Notes
+
+This project is part of my journey to becoming a Full Stack AWS Engineer.
