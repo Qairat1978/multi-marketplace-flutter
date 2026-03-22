@@ -1,17 +1,8 @@
-# 📱 Multi-Vendor Marketplace App (Flutter Frontend)
+# 🚀 Multi-Vendor Marketplace Mobile App (Flutter + AWS)
 
-This is a Flutter mobile application connected to an AWS Serverless backend.  
-The project demonstrates how to build a scalable full-stack system (mobile + cloud).
+A scalable mobile application built with Flutter and connected to an AWS Serverless backend.
 
----
-
-## 🚀 Features
-
-- 🔐 User Signup UI (with validation)
-- 🔑 Ready for authentication (AWS Cognito integration)
-- 📦 Product API integration (in progress)
-- 📱 Tested on real Android device
-- 🎨 Clean and scalable UI structure
+This project demonstrates how to build a **production-ready full-stack system** combining mobile UI with cloud-based backend services.
 
 ---
 
@@ -20,38 +11,64 @@ The project demonstrates how to build a scalable full-stack system (mobile + clo
 - Flutter (Dart)
 - Material UI
 - Google Fonts
-- REST API integration
-- AWS Backend (Lambda, API Gateway, DynamoDB, Cognito)
+- REST API Integration
+- AWS Backend:
+  - Lambda
+  - API Gateway
+  - DynamoDB
+  - Cognito (Authentication)
+
+---
+
+## 🚀 Features
+
+### 🔐 Authentication
+- Signup UI with validation
+- Login screen (connected to AWS backend)
+- Forgot Password flow (API integrated)
+- JWT Token handling (secure auth)
+
+### 📦 Marketplace (In Progress)
+- Product API integration
+- Scalable structure for multi-vendor system
+
+### 📱 Mobile
+- Clean and responsive UI
+- Tested on real Android device
+- Production-style folder structure
 
 ---
 
 ## 🏗 Architecture
 
-Flutter App
-↓
-API Gateway
-↓
-AWS Lambda
-↓
-DynamoDB
+Flutter App  
+↓  
+API Gateway  
+↓  
+AWS Lambda (Business Logic)  
+↓  
+DynamoDB  
+
+✔ Fully serverless backend  
+✔ Scalable architecture  
+✔ Real-world system design  
 
 ---
 
 ## 📂 Project Structure
-ib/
+lib/
 main.dart
+controllers/
+services/
 views/
 auth/
+signin_screen.dart
 sign_up_screen.dart
+forgot_password_screen.dart
+confirm_reset_screen.dart
+home/
+home_screen.dart
 
-
----
-
-## 🧪 Example Screen
-
-- Signup Screen (Email, Name, Password)
-- Form validation included
-- Ready for API connection
 
 ---
 
@@ -66,30 +83,33 @@ sign_up_screen.dart
 ```bash
 flutter pub get
 flutter run
+
+🧪 Screens
+Signup Screen (Email, Name, Password)
+Login Screen
+Forgot Password Flow
+
+✔ Form validation included
+✔ API-ready architecture
+
 🎯 What I Learned
+Building scalable mobile apps with Flutter
+Integrating frontend with AWS Serverless backend
+Authentication flow (JWT, API integration)
+Clean architecture and folder structure
+Real device testing
 
-Building mobile UI with Flutter
-
-Connecting frontend with AWS backend
-
-Form validation and clean UI design
-
-Testing on real devices
-🔥 Next Steps
-
-Connect Signup API (AWS Cognito)
-
-Login & Authentication flow
-
+🚀 Next Steps
 Product listing screen
-
-Image upload (AWS S3)
-
 Order system
+Payment integration
+Image upload (AWS S3)
+Multi-vendor logic
 
 👨‍💻 Author
 
 Kairat Tulegenov
+Backend & Flutter Developer (AWS Serverless)
 
 ⭐️ Notes
 
