@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:multi_app/views/auth/confirm_screen.dart';
+import 'package:multi_app/views/auth/sign_up_screen.dart';
+import 'package:multi_app/views/home/home_screen.dart';
 import '../../controllers/auth_controller.dart';
+import '../../services/token_service.dart';
+import 'package:multi_app/views/auth/forgot_password_screen.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
 
   final emailController = TextEditingController();
-  final nameController = TextEditingController();
   final passwordController = TextEditingController();
 
   final authController = AuthController();
@@ -24,15 +26,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   void dispose() {
     emailController.dispose();
-    nameController.dispose();
     passwordController.dispose();
     super.dispose();
   }
 
-  /// =========================
-  /// 🔥 SIGN UP FUNCTION
-  /// =========================
-  Future<void> signUp() async {
+  /// 🔥 LOGIN FUNCTION (FIXED)
+  Future<void> login() async {
+    if (isLoading) return;
+
     FocusScope.of(context).unfocus();
 
     if (!_formKey.currentState!.validate()) return;
@@ -40,41 +41,52 @@ class _SignUpScreenState extends State<SignUpScreen> {
     setState(() => isLoading = true);
 
     try {
-      final result = await authController.signUp(
+      final result = await authController.signIn(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
-        fullName: nameController.text.trim(), // ✅ FIXED
       );
 
       if (!mounted) return;
 
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(result['message'] ?? "Success")));
+      debugPrint("LOGIN RESPONSE: $result");
 
-      /// 👉 КЕЛЕСІ STEP (OTP экран)
-      Navigator.push(
+      final accessToken = result['accessToken'];
+      final refreshToken = result['refreshToken'];
+
+      if (accessToken == null || accessToken.isEmpty) {
+        throw Exception("Login failed: token not received");
+      }
+
+      /// 🔐 TOKEN SAVE
+      await TokenService.saveTokens(
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+      );
+
+      debugPrint("TOKEN SAVED ✅");
+
+      /// 🔥 FIX ОСЫ ЖЕР
+      if (!mounted) return;
+
+      /// 🚀 DIRECT → HOME
+      Navigator.pushReplacement(
         context,
-        MaterialPageRoute(
-          builder: (_) => ConfirmCodeScreen(email: emailController.text.trim()),
-        ),
+        MaterialPageRoute(builder: (_) => const HomeScreen()),
       );
     } catch (e) {
       if (!mounted) return;
+
+      debugPrint("LOGIN ERROR: $e");
 
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text("Error: $e")));
     } finally {
-      if (mounted) {
-        setState(() => isLoading = false);
-      }
+      if (mounted) setState(() => isLoading = false);
     }
   }
 
-  /// =========================
   /// VALIDATION
-  /// =========================
   String? validateEmail(String? value) {
     if (value == null || value.isEmpty) return "Email required";
     if (!value.contains('@')) return "Invalid email";
@@ -94,18 +106,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 padding: const EdgeInsets.all(20),
                 child: Column(
                   children: [
-                    const SizedBox(height: 40),
+                    const SizedBox(height: 60),
 
-                    /// TITLE
                     Text(
-                      "Create Your Account",
+                      "Welcome Back",
                       style: GoogleFonts.montserrat(
-                        fontSize: 22,
+                        fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
 
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 40),
 
                     /// EMAIL
                     TextFormField(
@@ -113,31 +124,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       keyboardType: TextInputType.emailAddress,
                       decoration: const InputDecoration(
                         labelText: 'Enter email',
-                        prefixIcon: Icon(Icons.email, color: Colors.blueAccent),
+                        prefixIcon: Icon(Icons.email),
                         border: OutlineInputBorder(),
                       ),
                       validator: validateEmail,
                     ),
 
-                    const SizedBox(height: 15),
-
-                    /// FULL NAME
-                    TextFormField(
-                      controller: nameController,
-                      decoration: const InputDecoration(
-                        labelText: 'Enter Full Name',
-                        prefixIcon: Icon(
-                          Icons.person,
-                          color: Colors.blueAccent,
-                        ),
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: (value) => value == null || value.isEmpty
-                          ? "Name required"
-                          : null,
-                    ),
-
-                    const SizedBox(height: 15),
+                    const SizedBox(height: 20),
 
                     /// PASSWORD
                     TextFormField(
@@ -145,7 +138,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       obscureText: true,
                       decoration: const InputDecoration(
                         labelText: 'Enter Password',
-                        prefixIcon: Icon(Icons.lock, color: Colors.blueAccent),
+                        prefixIcon: Icon(Icons.lock),
                         border: OutlineInputBorder(),
                       ),
                       validator: (value) => value != null && value.length < 6
@@ -153,46 +146,46 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           : null,
                     ),
 
-                    const SizedBox(height: 25),
+                    const SizedBox(height: 30),
 
                     /// BUTTON
                     SizedBox(
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: isLoading ? null : signUp,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blueAccent,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
+                        onPressed: isLoading ? null : login,
                         child: isLoading
                             ? const CircularProgressIndicator(
                                 color: Colors.white,
                               )
-                            : Text(
-                                'SIGN UP',
-                                style: GoogleFonts.montserrat(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                            : const Text("LOGIN"),
                       ),
                     ),
 
                     const SizedBox(height: 20),
 
-                    /// LOGIN NAV
+                    /// SIGN UP
                     TextButton(
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const SignUpScreen(),
+                          ),
+                        );
                       },
-                      child: Text(
-                        "Already have an account? Login",
-                        style: GoogleFonts.montserrat(),
-                      ),
+                      child: const Text("Don't have an account? Sign up"),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const ForgotPasswordScreen(),
+                          ),
+                        );
+                      },
+                      child: const Text("Forgot Password?"),
                     ),
                   ],
                 ),
