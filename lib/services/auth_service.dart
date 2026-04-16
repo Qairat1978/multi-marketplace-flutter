@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 class AuthService {
   /// 🔥 API BASE URL (өз endpoint)
   static const String baseUrl =
-      "https://6wooqkdhi0.execute-api.us-east-1.amazonaws.com/prod";
+      "https://oc9bpfq2x2.execute-api.eu-central-1.amazonaws.com/prod/";
 
   /// =========================
   /// 🟢 SIGN UP

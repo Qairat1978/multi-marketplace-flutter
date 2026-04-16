@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:multi_app/views/auth/sign_up_screen.dart';
-import 'package:multi_app/views/home/home_screen.dart';
+import 'package:multi_app/views/main/home_screen.dart';
 import '../../controllers/auth_controller.dart';
 import '../../services/token_service.dart';
 import 'package:multi_app/views/auth/forgot_password_screen.dart';

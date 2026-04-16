@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multi_app/views/auth/signin_screen.dart';
-import 'package:multi_app/views/home/home_screen.dart';
+import 'package:multi_app/views/main/home_screen.dart';
 import 'package:multi_app/services/token_service.dart';
 
 void main() async {
